@@ -45,15 +45,22 @@ class FirewallUpdater:
         firewall = next(f for f in self._client.networking.firewalls() if f.label == self._config.firewall_name)
         rules = firewall.get_rules()
         rule_modified = False
+        rule_found = False
         for rule in rules["inbound"]:
             if rule["label"] == self._config.rule_label:
-                rule["addresses"]["ipv4"] = [str(ip_network)]
-                rule_modified = True
-        if not rule_modified:
+                rule_found = True
+                if rule["addresses"]["ipv4"] != [str(ip_network)]
+                    old_address = rule["addresses"]["ipv4"][0]
+                    rule["addresses"]["ipv4"] = [str(ip_network)]
+                    rule_modified = True
+                    logging.info(f"Rule config changed from {old_address} to {ip_network}")
+        if not rule_found:
             raise ValueError(f"No rule found with name '{self._config.rule_label}'")
-        # firewall.update_rules(rules)
-        logging.info("Successfully updated firewall")
-
+        if rule_modified:
+            firewall.update_rules(rules)
+            logging.info("Successfully updated firewall")        
+        else:
+            logging.info("No changes required")
 
 class Config:
     def __init__(self):
