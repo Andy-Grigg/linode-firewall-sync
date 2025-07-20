@@ -47,7 +47,7 @@ class FirewallUpdater:
         rule_modified = False
         for rule in rules["inbound"]:
             if rule["label"] == self._config.rule_label:
-                rule["addresses"]["ipv4"] = str(ip_network)
+                rule["addresses"]["ipv4"] = [str(ip_network)]
                 rule_modified = True
         if not rule_modified:
             raise ValueError(f"No rule found with name '{self._config.rule_label}'")
