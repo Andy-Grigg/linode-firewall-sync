@@ -49,7 +49,7 @@ class FirewallUpdater:
         for rule in rules["inbound"]:
             if rule["label"] == self._config.rule_label:
                 rule_found = True
-                if rule["addresses"]["ipv4"] != [str(ip_network)]
+                if rule["addresses"]["ipv4"] != [str(ip_network)]:
                     old_address = rule["addresses"]["ipv4"][0]
                     rule["addresses"]["ipv4"] = [str(ip_network)]
                     rule_modified = True
